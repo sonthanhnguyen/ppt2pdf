@@ -1,14 +1,24 @@
-import comtypes.client
+"""
+    A simple Python script to convert all Powerpoint files in a certain directory to
+    pdf files in Windows environment.
+
+    Usage: python ppt2pdf.py -p <path_to_source_directory>
+
+    Dependency:
+        The script uses comtypes. Install it by 'pip install comtypes'
+"""
 import os
 import sys
+import comtypes.client
 
-def ppt_2_pdf(input_ppt_file, output_pdf_file, format_type = 32):
+
+def ppt_2_pdf(input_ppt_file, output_pdf_file, format_type=32):
     """
     Convert a Powerpoint file to a pdf file
-    
+
     :param input_ppt_file: input Powerpoint file
     :param output_pdf_file: output pdf file
-    :param format_type: 
+    :param format_type:
     :return: a pdf file written in the directory
     """
     powerpoint = comtypes.client.CreateObject("Powerpoint.Application")
@@ -22,6 +32,7 @@ def ppt_2_pdf(input_ppt_file, output_pdf_file, format_type = 32):
     ppt_file.Close()
     powerpoint.Quit()
 
+
 def convert_all_ppt(directory):
     """
     Convert all Powerpoint files in the same directory to pdf files
@@ -31,7 +42,7 @@ def convert_all_ppt(directory):
     """
     try:
         for file in os.listdir(directory):
-            file_name, file_extension = os.path.splitext(file)
+            _, file_extension = os.path.splitext(file)
             if "ppt" in file_extension:
                 input_file = directory + "\\" + file
                 output_file = input_file + "_output.pdf"
@@ -40,10 +51,15 @@ def convert_all_ppt(directory):
         print("The system cannot file directory \'{0}\'".format(directory))
         exit(2)
     except OSError:
-        print("The filename, directory name, or volume label syntax is incorrect: \'{0}\'".format(directory))
+        print("The filename, directory name, or volume label syntax is incorrect: \'{0}\'"
+              .format(directory))
         exit(2)
 
+
 def main(argv):
+    """
+    Main function
+    """
     # No argument
     if len(argv) <= 1:
         print("To get help, use: ppt2pdf.py -h")
